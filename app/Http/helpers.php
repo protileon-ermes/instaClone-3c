@@ -10,9 +10,11 @@ namespace {
         /**
          * Get the authentication guard
          *
-         * @return \Illuminate\Contracts\Auth\Guard
+         * @return \Illuminate\Contracts\Auth\Guard&object{user(): \App\Models\User|null, id(): int|null}
          */
-        function auth() {}
+        function auth() {
+            return null;
+        }
     }
 }
 

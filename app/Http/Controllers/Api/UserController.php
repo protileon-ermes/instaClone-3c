@@ -33,7 +33,7 @@ class UserController extends Controller
     #[OA\Response(response: 200, description: 'Perfil atualizado')]
     public function update(Request $request)
     {
-        /** @var \App\Models\User $user */
+        /** @var \App\Models\User&object{id: int} $user */
         $user = auth()->user();
 
         $data = $request->validate([
