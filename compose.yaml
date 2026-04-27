@@ -1,16 +1,45 @@
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: instaclone-api
+    ports:
+      - "8003:8000"
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - SERVER_NAME=:8000 #
+      - FRANKENPHP_WORKER_COMMAND=php public/index.php 
+    volumes:
+      - app_storage:/app/storage
+    depends_on:
+      - mysql
+      
+
   mysql:
     image: mysql:8.0
     container_name: instaclone-db
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_DATABASE: instaclone
-      MYSQL_ROOT_PASSWORD: root
+      - MYSQL_DATABASE=${DB_DATABASE:-instaclone}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-root}
+      #MYSQL_USER=${DB_USERNAME:-root}
+      #MYSQL_PASSWORD=${DB_PASSWORD:-root}
     ports:
-      - "3307:3306"
+      - "3307:3306" 
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h localhost -u root -proot || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
 volumes:
   mysql_data:
+  app_storage:
