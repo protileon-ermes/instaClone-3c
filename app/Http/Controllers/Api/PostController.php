@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Services\PostService;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests; // Importante para as Policies
+use OpenApi\Attributes as OA;
 
 class PostController extends Controller
 {
@@ -16,6 +17,8 @@ class PostController extends Controller
     {
     }
 
+    #[OA\Post(path: '/posts', tags: ['Post'], summary: 'Criar novo post')]
+    #[OA\Response(response: 201, description: 'Post criado')]
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -23,8 +26,10 @@ class PostController extends Controller
             'caption' => 'nullable|string|max:2200'
         ]);
 
+        /** @var int $userId */
+        $userId = auth()->id();
         $post = $this->postService->createPost(
-            auth()->id(),
+            $userId,
             $request->file('image'),
             $data['caption'] ?? null
         );
@@ -32,22 +37,27 @@ class PostController extends Controller
         return response()->json($post, 201);
     }
 
+    #[OA\Get(path: '/posts/{post}', tags: ['Post'], summary: 'Obter detalhes do post')]
+    #[OA\Response(response: 200, description: 'Detalhes do post')]
     public function show(Post $post)
     {
         return $post->load('user');
     }
 
+    #[OA\Delete(path: '/posts/{post}', tags: ['Post'], summary: 'Deletar post')]
+    #[OA\Response(response: 200, description: 'Post deletado com sucesso')]
     public function destroy(Post $post)
     {
-        // Aqui verificamos se o user_id do post é o mesmo do usuário logado
-        if ($post->user_id !== auth()->id()) {
-            return response()->json(['error' => 'Não autorizado'], 403);
-        }
+        // O Laravel verifica se o usuário logado passa na regra 'delete' da PostPolicy
+        $this->authorize('delete', $post);
 
-        $this->postService->deletePost($post);
-        return response()->json(['message' => 'Post deletado']);
+        $post->delete();
+
+        return response()->json(['message' => 'Post deletado com sucesso']);
     }
 
+    #[OA\Get(path: '/users/{userId}/posts', tags: ['Post'], summary: 'Obter posts do usuário')]
+    #[OA\Response(response: 200, description: 'Lista de posts do usuário')]
     public function userPosts($userId)
     {
         return Post::where('user_id', $userId)
@@ -55,9 +65,11 @@ class PostController extends Controller
             ->paginate(12);
     }
 
+    #[OA\Put(path: '/posts/{post}', tags: ['Post'], summary: 'Atualizar post')]
+    #[OA\Response(response: 200, description: 'Post atualizado')]
     public function update(Request $request, Post $post)
     {
-        // Verifica se o usuário é o dono do post
+        // O Laravel verifica se o usuário logado passa na regra 'update' da PostPolicy
         $this->authorize('update', $post);
 
         $data = $request->validate([

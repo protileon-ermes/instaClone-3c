@@ -3,28 +3,37 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class FollowService
 {
-    public function follow(User $follower, int $followedId)
+    public function follow(int $userIdToFollow)
     {
-        // Impede de seguir a si mesmo
-        if ($follower->id === $followedId) {
+        /** @var User $user */
+        $user = Auth::user();
+
+        // Impedir de seguir a si mesmo
+        if ($user->id === $userIdToFollow) {
             throw new \Exception("Você não pode seguir a si mesmo.");
         }
 
-        // attach() cria a relação na tabela pivô
-        return $follower->following()->syncWithoutDetaching([$followedId]);
+        // Agora o Intelephense sabe que $user tem o método following()
+        return $user->following()->syncWithoutDetaching([$userIdToFollow]);
     }
 
-    public function unfollow(User $follower, int $followedId)
+    public function unfollow(int $userIdToUnfollow)
     {
-        // detach() remove a relação
-        return $follower->following()->detach($followedId);
+        /** @var User $user */
+        $user = Auth::user();
+
+        return $user->following()->detach($userIdToUnfollow);
     }
-    
-    public function isFollowing(User $follower, int $followedId): bool
+
+    public function isFollowing(int $targetUserId): bool
     {
-        return $follower->following()->where('followed_id', $followedId)->exists();
+        /** @var User $user */
+        $user = Auth::user();
+
+        return $user->following()->where('following_id', $targetUserId)->exists();
     }
 }

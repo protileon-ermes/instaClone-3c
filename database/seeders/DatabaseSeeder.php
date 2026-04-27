@@ -15,14 +15,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'name' => 'Ermes Dev',
-            'username' => 'ermes_dev',
-            'email' => 'teste@exemplo.com',
-            'password' => bcrypt('12345678'),
-        ]);
+        $users = User::factory(10)->create();
 
-        // Cria mais 10 usuários aleatórios para testarmos o Follow depois
-        User::factory(10)->create();
+        $users->each(function ($user) {
+            \App\Models\Post::factory(3)->create(['user_id' => $user->id]);
+        });
+
+        foreach ($users as $user) {
+            $user->following()->attach(
+                $users->random(rand(1, 5))->pluck('id')->toArray()
+            );
+        }
+
+        \App\Models\Comment::factory(50)->create();
+        \App\Models\Like::factory(100)->create();
     }
 }

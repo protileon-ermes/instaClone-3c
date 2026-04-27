@@ -7,31 +7,32 @@ use App\Models\Post;
 
 class LikeService
 {
-    public function toggleLike(int $userId, int $postId): array
+    /**
+     * Adiciona um like. Se já existir, não faz nada (Idempotente).
+     */
+    public function likePost(int $userId, int $postId): void
     {
-        $post = Post::findOrFail($postId);
-
-        $like = Like::where('user_id', $userId)
-                    ->where('post_id', $postId)
-                    ->first();
-
-        if ($like) {
-            $like->delete();
-            return ['status' => 'unliked', 'count' => $post->likes()->count()];
-        }
-
-        Like::create([
+        // firstOrCreate garante que não haverá duplicatas no banco
+        Like::firstOrCreate([
             'user_id' => $userId,
             'post_id' => $postId
         ]);
+    }
 
-        return ['status' => 'liked', 'count' => $post->likes()->count()];
+    /**
+     * Remove um like. Se não existir, não faz nada (Idempotente).
+     */
+    public function unlikePost(int $userId, int $postId): void
+    {
+        // O delete() no Query Builder do Laravel não gera erro se o registro não for encontrado
+        Like::where('user_id', $userId)
+            ->where('post_id', $postId)
+            ->delete();
     }
 
     public function getPostLikers(int $postId)
     {
         $post = Post::findOrFail($postId);
-        // Retorna a lista de usuários que curtiram, com paginação
         return $post->likes()->with('user:id,username,name,avatar')->paginate(20);
     }
 }

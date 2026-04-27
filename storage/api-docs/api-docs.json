@@ -1,0 +1,385 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "InstaClone API Documentation",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api",
+            "description": "Servidor de API Principal"
+        }
+    ],
+    "paths": {
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Registrar novo usuário",
+                "operationId": "08136088c4862c313b35d6518bab8d3a",
+                "responses": {
+                    "201": {
+                        "description": "Usuário criado"
+                    },
+                    "422": {
+                        "description": "Dados inválidos"
+                    }
+                }
+            }
+        },
+        "/posts/{postId}/comments": {
+            "get": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Listar comentários de um post",
+                "operationId": "48be78ad2417cc7a2b2c87765a6cb6d0",
+                "responses": {
+                    "200": {
+                        "description": "Lista de comentários"
+                    }
+                }
+            }
+        },
+        "/posts/{id}/comments": {
+            "post": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Comentar em post",
+                "operationId": "b056d5e9ecfd71a416b743b9745555a4",
+                "responses": {
+                    "201": {
+                        "description": "Comentário criado"
+                    }
+                }
+            }
+        },
+        "/comments/{comment}": {
+            "put": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Atualizar comentário",
+                "operationId": "6a1dda0ab813d36b9f18c0e8bc553fc0",
+                "responses": {
+                    "200": {
+                        "description": "Comentário atualizado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Deletar comentário",
+                "operationId": "ab3cdf1ebaba961e4306e070da52a7ac",
+                "responses": {
+                    "200": {
+                        "description": "Removido"
+                    }
+                }
+            }
+        },
+        "/feed": {
+            "get": {
+                "tags": [
+                    "Feed"
+                ],
+                "summary": "Obter feed de postagens",
+                "description": "Retorna os posts dos usuários seguidos e do próprio usuário logado.",
+                "operationId": "getFeed",
+                "responses": {
+                    "200": {
+                        "description": "Sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                }
+            }
+        },
+        "/users/{id}/follow": {
+            "post": {
+                "tags": [
+                    "Follow"
+                ],
+                "summary": "Seguir usuário",
+                "operationId": "6f109447b27b2dcc26dbf7dfeb0ce585",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso"
+                    }
+                }
+            }
+        },
+        "/users/{id}/unfollow": {
+            "delete": {
+                "tags": [
+                    "Follow"
+                ],
+                "summary": "Deixar de seguir usuário",
+                "operationId": "a370b6512b85f3dccf6bb694dc770a43",
+                "responses": {
+                    "200": {
+                        "description": "Deixou de seguir"
+                    }
+                }
+            }
+        },
+        "/users/{id}/is-following": {
+            "get": {
+                "tags": [
+                    "Follow"
+                ],
+                "summary": "Verificar se está seguindo",
+                "operationId": "5c362493b3117c7985d78ffab45cca9a",
+                "responses": {
+                    "200": {
+                        "description": "Status de follow"
+                    }
+                }
+            }
+        },
+        "/posts/{id}/like": {
+            "post": {
+                "tags": [
+                    "Like"
+                ],
+                "summary": "Curtir post",
+                "operationId": "f5f88d57a6953e76c9c3a504d7d789f0",
+                "responses": {
+                    "200": {
+                        "description": "Curtido"
+                    }
+                }
+            }
+        },
+        "/posts/{id}/unlike": {
+            "delete": {
+                "tags": [
+                    "Like"
+                ],
+                "summary": "Descurtir post",
+                "operationId": "6597f91c05b2bac8149240fcd035d10f",
+                "responses": {
+                    "200": {
+                        "description": "Descurtido"
+                    }
+                }
+            }
+        },
+        "/posts/{postId}/likes": {
+            "get": {
+                "tags": [
+                    "Like"
+                ],
+                "summary": "Listar quem curtiu",
+                "operationId": "8f72bd2b37b85978fbafa9fbc78ac9f0",
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuários"
+                    }
+                }
+            }
+        },
+        "/posts": {
+            "post": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Criar novo post",
+                "operationId": "21a6ac5f9280a3cf958c3d066b5600ee",
+                "responses": {
+                    "201": {
+                        "description": "Post criado"
+                    }
+                }
+            }
+        },
+        "/posts/{post}": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Obter detalhes do post",
+                "operationId": "282e197939666875838f96d76bb8549e",
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do post"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Atualizar post",
+                "operationId": "8cf741031e3317108bb6432b7bc6334b",
+                "responses": {
+                    "200": {
+                        "description": "Post atualizado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Deletar post",
+                "operationId": "9f90bc40d15de327d974a5e0cbd3c649",
+                "responses": {
+                    "200": {
+                        "description": "Post deletado com sucesso"
+                    }
+                }
+            }
+        },
+        "/users/{userId}/posts": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Obter posts do usuário",
+                "operationId": "95a493c7376ee1854cb3b468135d4a02",
+                "responses": {
+                    "200": {
+                        "description": "Lista de posts do usuário"
+                    }
+                }
+            }
+        },
+        "/users/{username}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Obter perfil do usuário",
+                "operationId": "6b3bd89433fb9c2aa4b80d8bbf570fa2",
+                "responses": {
+                    "200": {
+                        "description": "Dados do usuário"
+                    }
+                }
+            }
+        },
+        "/users/me": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Atualizar perfil do usuário",
+                "operationId": "8cb0afa63b826be9d8d9013af106a385",
+                "responses": {
+                    "200": {
+                        "description": "Perfil atualizado"
+                    }
+                }
+            }
+        },
+        "/users/me/avatar": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Atualizar avatar do usuário",
+                "operationId": "3ecae0aa606196b2eed4084f2389ecb1",
+                "responses": {
+                    "200": {
+                        "description": "Avatar atualizado com sucesso!"
+                    }
+                }
+            }
+        },
+        "/users/search": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Buscar usuários",
+                "operationId": "2a0853a6b9d59306dc35a19c3ae35713",
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuários"
+                    }
+                }
+            }
+        },
+        "/users/{id}/followers": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Listar seguidores do usuário",
+                "operationId": "aa9942c593e5c5aff4c36789e6876bd9",
+                "responses": {
+                    "200": {
+                        "description": "Lista de seguidores"
+                    }
+                }
+            }
+        },
+        "/users/{id}/following": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Listar usuários que está seguindo",
+                "operationId": "3905a4c8956794d90fbb94d248a5c857",
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuários seguidos"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Comment",
+            "description": "Comment"
+        },
+        {
+            "name": "Feed",
+            "description": "Feed"
+        },
+        {
+            "name": "Follow",
+            "description": "Follow"
+        },
+        {
+            "name": "Like",
+            "description": "Like"
+        },
+        {
+            "name": "Post",
+            "description": "Post"
+        },
+        {
+            "name": "User",
+            "description": "User"
+        }
+    ]
+}

@@ -9,19 +9,18 @@ return new class () extends Migration {
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('followers', function (Blueprint $table) {
-            $table->id();
-            // Quem segue
-            $table->foreignId('follower_id')->constrained('users')->onDelete('cascade');
-            // Quem é seguido
-            $table->foreignId('followed_id')->constrained('users')->onDelete('cascade');
-
-            // Impede que alguém siga a mesma pessoa duas vezes
-            $table->unique(['follower_id', 'followed_id']);
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('follows', function (Blueprint $table) {
+        $table->id();
+        // follower_id: quem está seguindo
+        $table->foreignId('follower_id')->constrained('users')->onDelete('cascade');
+        // following_id: quem está sendo seguido
+        $table->foreignId('following_id')->constrained('users')->onDelete('cascade');
+        
+        $table->unique(['follower_id', 'following_id']);
+        $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.

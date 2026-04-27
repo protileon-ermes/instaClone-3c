@@ -5,11 +5,27 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
 
+#[OA\Info(title: "InstaClone API Documentation", version: "1.0.0")]
+#[OA\Server(url: "/api", description: "Servidor de API Principal")]
 class AuthController extends Controller
 {
-    public function __construct(protected AuthService $authService) {}
-
+    public function __construct(protected AuthService $authService)
+    {
+    }
+    /**
+     * @OA\Post(
+     * path="/auth/register",
+     * tags={"Auth"},
+     * summary="Registrar novo usuário",
+     * @OA\Response(response=201, description="Usuário criado"),
+     * @OA\Response(response=422, description="Dados inválidos")
+     * )
+     */
+    #[OA\Post(path: '/auth/register', tags: ['Auth'], summary: 'Registrar novo usuário')]
+    #[OA\Response(response: 201, description: 'Usuário criado')]
+    #[OA\Response(response: 422, description: 'Dados inválidos')]
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -28,6 +44,14 @@ class AuthController extends Controller
         ], 201);
     }
 
+    /**
+     * @OA\Post(
+     * path="/auth/login",
+     * tags={"Auth"},
+     * summary="Login",
+     * @OA\Response(response=200, description="Token retornado")
+     * )
+     */
     public function login(Request $request)
     {
         $data = $request->validate([
@@ -53,7 +77,7 @@ class AuthController extends Controller
     public function refresh(Request $request)
     {
         $newToken = $this->authService->refreshToken($request->user());
-        
+
         return response()->json([
             'access_token' => $newToken,
             'token_type'   => 'Bearer'
