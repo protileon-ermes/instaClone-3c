@@ -19,18 +19,15 @@ class UserService
     /**
      * Lida com o upload e substituição do avatar.
      */
-    public function uploadAvatar(User $user, $image): string
+    public function uploadAvatar(User $user, $image): void
     {
-        // Se já existir um avatar, deletamos o arquivo antigo
-        if ($user->avatar) {
-            Storage::disk('public')->delete($user->avatar);
+        $oldAvatar = $user->getRawOriginal('avatar'); // path cru, ignora o accessor
+
+        if ($oldAvatar) {
+            Storage::disk('public')->delete($oldAvatar);
         }
 
-        // Salva a nova imagem na pasta 'avatars' dentro do disco public
         $path = $image->store('avatars', 'public');
-        
         $user->update(['avatar' => $path]);
-
-        return Storage::url($path);
     }
 }

@@ -15,7 +15,7 @@ class UserController extends Controller
     ) {
     }
 
-    // GET /api/users/{username}
+    // GET /s/{username}
     #[OA\Get(path: '/users/{username}', tags: ['User'], summary: 'Obter perfil do usuário')]
     #[OA\Response(response: 200, description: 'Dados do usuário')]
     public function show($username)
@@ -53,17 +53,16 @@ class UserController extends Controller
     public function updateAvatar(Request $request)
     {
         $request->validate([
-            'avatar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         /** @var \App\Models\User $user */
         $user = auth()->user();
-        $url = $this->userService->uploadAvatar($user, $request->file('avatar'));
-
-        return response()->json([
-            'message' => 'Avatar atualizado com sucesso!',
-            'url'     => $url
-        ]);
+        $this->userService->uploadAvatar($user, $request->file('avatar'));
+        
+        // Retornar usuário atualizado, não apenas a URL
+        $user->refresh();
+        return response()->json($user);
     }
 
     #[OA\Get(path: '/users/search', tags: ['User'], summary: 'Buscar usuários')]
