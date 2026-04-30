@@ -21,8 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 
-Route::get('/users/search', [UserController::class, 'search']);       // ← mover
-Route::get('/users/{username}', [UserController::class, 'show']);     // ← mover
+Route::get('/users/search', [UserController::class, 'search']);      
+Route::get('/users/{username}', [UserController::class, 'show']);     
 
 
 // ============================================================
