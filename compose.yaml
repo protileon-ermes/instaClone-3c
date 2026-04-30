@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     environment:
-      - DB_HOST=mysql
+      - DB_HOST=instaclone-db
       - DB_PORT=3306
       - SERVER_NAME=:8000 #
       - FRANKENPHP_WORKER_COMMAND=php public/index.php 
@@ -27,8 +27,8 @@ services:
     environment:
       - MYSQL_DATABASE=${DB_DATABASE:-instaclone}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-root}
-      #MYSQL_USER=${DB_USERNAME:-root}
-      #MYSQL_PASSWORD=${DB_PASSWORD:-root}
+      - MYSQL_USER=sail        
+      - MYSQL_PASSWORD=password
     ports:
       - "3307:3306" 
     volumes:

@@ -26,8 +26,5 @@ class DatabaseSeeder extends Seeder
                 $users->random(rand(1, 5))->pluck('id')->toArray()
             );
         }
-
-        \App\Models\Comment::factory(50)->create();
-        \App\Models\Like::factory(100)->create();
     }
 }

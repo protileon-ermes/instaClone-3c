@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 
+Route::get('/users/search', [UserController::class, 'search']);       // ← mover
+Route::get('/users/{username}', [UserController::class, 'show']);     // ← mover
+
 
 // ============================================================
 // 2. ROTAS PROTEGIDAS (Sanctum)
@@ -38,8 +41,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/feed', [FeedController::class, 'index']);
 
     // --- Perfil de Usuário (Passo 3) ---
-    Route::get('/users/search', [UserController::class, 'search']);
-    Route::get('/users/{username}', [UserController::class, 'show']);
     Route::put('/users/me', [UserController::class, 'update']);
     Route::post('/users/me/avatar', [UserController::class, 'updateAvatar']);
 

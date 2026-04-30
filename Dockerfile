@@ -8,7 +8,7 @@ COPY composer.json composer.lock ./
 
 # Instala dependências usando cache do Docker para o Composer
 RUN --mount=type=cache,target=/tmp/cache \
-    composer install --no-dev --no-scripts --no-interaction --prefer-dist --ignore-platform-reqs
+    composer install --no-scripts --no-interaction --prefer-dist --ignore-platform-reqs
 
 COPY . .
 # Gera o autoload otimizado após copiar os arquivos do projeto
@@ -33,6 +33,8 @@ COPY --from=vendor /app /app
 # Aplica as configurações do Docker
 COPY docker/php.ini $PHP_INI_DIR/conf.d/custom.ini
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+
+RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh && chmod +x /usr/local/bin/entrypoint.sh
 
 # Ajusta permissões pro usuário www-data (padrão do server)
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
