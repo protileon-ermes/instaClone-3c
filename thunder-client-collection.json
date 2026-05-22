@@ -1,0 +1,275 @@
+{
+  "info": {
+    "name": "InstaClone API",
+    "description": "Exemplos de requisições para testar a API InstaClone no Thunder Client",
+    "version": "1.0.0"
+  },
+  "baseUrl": "http://localhost:8003/api",
+  "requests": [
+    {
+      "name": "🔐 Auth - Registrar",
+      "method": "POST",
+      "url": "{{baseUrl}}/auth/register",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "name": "João Silva",
+        "username": "joao_silva",
+        "email": "joao@example.com",
+        "password": "senha123456",
+        "password_confirmation": "senha123456"
+      },
+      "tests": []
+    },
+    {
+      "name": "🔐 Auth - Login",
+      "method": "POST",
+      "url": "{{baseUrl}}/auth/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "email": "joao@example.com",
+        "password": "senha123456"
+      },
+      "tests": []
+    },
+    {
+      "name": "🔐 Auth - Me",
+      "method": "GET",
+      "url": "{{baseUrl}}/auth/me",
+      "headers": {
+        "Authorization": "Bearer {{token}}"
+      },
+      "tests": []
+    },
+    {
+      "name": "🔐 Auth - Logout",
+      "method": "POST",
+      "url": "{{baseUrl}}/auth/logout",
+      "headers": {
+        "Authorization": "Bearer {{token}}"
+      },
+      "tests": []
+    },
+    {
+      "name": "🔐 Auth - Refresh Token",
+      "method": "POST",
+      "url": "{{baseUrl}}/auth/refresh",
+      "headers": {
+        "Authorization": "Bearer {{token}}"
+      },
+      "tests": []
+    },
+    {
+      "name": "👤 User - Buscar",
+      "method": "GET",
+      "url": "{{baseUrl}}/users/search?q=joao",
+      "headers": {},
+      "tests": []
+    },
+    {
+      "name": "👤 User - Perfil",
+      "method": "GET",
+      "url": "{{baseUrl}}/users/joao_silva",
+      "headers": {},
+      "tests": []
+    },
+    {
+      "name": "👤 User - Atualizar Perfil",
+      "method": "PUT",
+      "url": "{{baseUrl}}/users/me",
+      "headers": {
+        "Authorization": "Bearer {{token}}",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "name": "João Silva Santos",
+        "username": "joao_silva_2",
+        "bio": "Fotografo profissional 📸"
+      },
+      "tests": []
+    },
+    {
+      "name": "👤 User - Atualizar Avatar",
+      "method": "POST",
+      "url": "{{baseUrl}}/users/me/avatar",
+      "headers": {
+        "Authorization": "Bearer {{token}}"
+      },
+      "files": {
+        "avatar": "/path/to/image.jpg"
+      },
+      "tests": []
+    },
+    {
+      "name": "👤 User - Seguidores",
+      "method": "GET",
+      "url": "{{baseUrl}}/users/1/followers?page=1",
+      "headers": {},
+      "tests": []
+    },
+    {
+      "name": "👤 User - Seguindo",
+      "method": "GET",
+      "url": "{{baseUrl}}/users/1/following?page=1",
+      "headers": {},
+      "tests": []
+    },
+    {
+      "name": "🔗 Follow - Seguir Usuário",
+      "method": "POST",
+      "url": "{{baseUrl}}/users/2/follow",
+      "headers": {
+        "Authorization": "Bearer {{token}}"
+      },
+      "tests": []
+    },
+    {
+      "name": "🔗 Follow - Deixar de Seguir",
+      "method": "DELETE",
+      "url": "{{baseUrl}}/users/2/unfollow",
+      "headers": {
+        "Authorization": "Bearer {{token}}"
+      },
+      "tests": []
+    },
+    {
+      "name": "🔗 Follow - Verificar Seguimento",
+      "method": "GET",
+      "url": "{{baseUrl}}/users/2/is-following",
+      "headers": {
+        "Authorization": "Bearer {{token}}"
+      },
+      "tests": []
+    },
+    {
+      "name": "📸 Post - Criar",
+      "method": "POST",
+      "url": "{{baseUrl}}/posts",
+      "headers": {
+        "Authorization": "Bearer {{token}}"
+      },
+      "files": {
+        "image": "/path/to/image.jpg"
+      },
+      "formData": {
+        "caption": "Que dia lindo! ☀️ #natureza #viagem"
+      },
+      "tests": []
+    },
+    {
+      "name": "📸 Post - Detalhes",
+      "method": "GET",
+      "url": "{{baseUrl}}/posts/1",
+      "headers": {},
+      "tests": []
+    },
+    {
+      "name": "📸 Post - Posts do Usuário",
+      "method": "GET",
+      "url": "{{baseUrl}}/users/1/posts?page=1",
+      "headers": {},
+      "tests": []
+    },
+    {
+      "name": "📸 Post - Atualizar",
+      "method": "PUT",
+      "url": "{{baseUrl}}/posts/1",
+      "headers": {
+        "Authorization": "Bearer {{token}}",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "caption": "Nova caption editada! 📸 #atualizando"
+      },
+      "tests": []
+    },
+    {
+      "name": "📸 Post - Deletar",
+      "method": "DELETE",
+      "url": "{{baseUrl}}/posts/1",
+      "headers": {
+        "Authorization": "Bearer {{token}}"
+      },
+      "tests": []
+    },
+    {
+      "name": "❤️ Like - Curtir Post",
+      "method": "POST",
+      "url": "{{baseUrl}}/posts/1/like",
+      "headers": {
+        "Authorization": "Bearer {{token}}"
+      },
+      "tests": []
+    },
+    {
+      "name": "❤️ Like - Descurtir Post",
+      "method": "DELETE",
+      "url": "{{baseUrl}}/posts/1/unlike",
+      "headers": {
+        "Authorization": "Bearer {{token}}"
+      },
+      "tests": []
+    },
+    {
+      "name": "❤️ Like - Listar Quem Curtiu",
+      "method": "GET",
+      "url": "{{baseUrl}}/posts/1/likes?page=1&per_page=20",
+      "headers": {},
+      "tests": []
+    },
+    {
+      "name": "💬 Comment - Listar",
+      "method": "GET",
+      "url": "{{baseUrl}}/posts/1/comments",
+      "headers": {},
+      "tests": []
+    },
+    {
+      "name": "💬 Comment - Criar",
+      "method": "POST",
+      "url": "{{baseUrl}}/posts/1/comments",
+      "headers": {
+        "Authorization": "Bearer {{token}}",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "body": "Adorei essa foto! Muito legal."
+      },
+      "tests": []
+    },
+    {
+      "name": "💬 Comment - Atualizar",
+      "method": "PUT",
+      "url": "{{baseUrl}}/comments/1",
+      "headers": {
+        "Authorization": "Bearer {{token}}",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "body": "Adorei essa foto! Muito legal mesmo! 🎉"
+      },
+      "tests": []
+    },
+    {
+      "name": "💬 Comment - Deletar",
+      "method": "DELETE",
+      "url": "{{baseUrl}}/comments/1",
+      "headers": {
+        "Authorization": "Bearer {{token}}"
+      },
+      "tests": []
+    },
+    {
+      "name": "📰 Feed - Obter",
+      "method": "GET",
+      "url": "{{baseUrl}}/feed?page=1&per_page=15",
+      "headers": {
+        "Authorization": "Bearer {{token}}"
+      },
+      "tests": []
+    }
+  ]
+}

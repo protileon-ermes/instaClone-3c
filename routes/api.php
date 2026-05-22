@@ -21,8 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 
-Route::get('/users/search', [UserController::class, 'search']);       // ← mover
-Route::get('/users/{username}', [UserController::class, 'show']);     // ← mover
+Route::get('/users/search', [UserController::class, 'search']);      
+Route::get('/users/{username}', [UserController::class, 'show']);     
 
 
 // ============================================================
@@ -48,8 +48,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/users/{id}/follow', [FollowController::class, 'follow']);
     Route::delete('/users/{id}/unfollow', [FollowController::class, 'unfollow']);
     Route::get('/users/{id}/is-following', [FollowController::class, 'checkFollow']);
-    Route::get('/users/{id}/followers', [UserController::class, 'followers']);
-    Route::get('/users/{id}/following', [UserController::class, 'following']);
+    Route::get('/users/{id}/followers', [FollowController::class, 'followers']);
+    Route::get('/users/{id}/following', [FollowController::class, 'following']);
 
     // --- Publicações/Posts (Passo 5) ---
     Route::post('/posts', [PostController::class, 'store']);

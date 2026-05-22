@@ -15,7 +15,7 @@ class AuthService
     {
         $user = User::create([
             'name'     => $data['name'],
-            'username' => $data['username'], // Importante para o Passo 3
+            'username' => $data['username'], 
             'email'    => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
